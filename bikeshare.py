@@ -46,14 +46,13 @@ def get_filters():
 
 def load_data(city, month, day):
     """
-    Loads data for the specified city and filters by month and day if applicable.
+        Loads data for the specified city's bikeshare system.
 
-    Args:
-        (str) city - name of the city to analyze
-        (str) month - name of the month to filter by, or "all" to apply no month filter
-        (str) day - name of the day of week to filter by, or "all" to apply no day filter
-    Returns:
-        df - Pandas DataFrame containing city data filtered by month and day
+        Args:
+            city (str): Name of the city to load data for.
+
+        Returns:
+            df (DataFrame): Pandas DataFrame containing the city's bikeshare data.
     """
     df = pd.read_csv(CITY_DATA[city])
     df['Start Time'] = pd.to_datetime(df['Start Time'])
@@ -170,6 +169,20 @@ def user_stats(df):
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
 
+def display_data(df):
+    """
+    Displays data in chunks of 5 rows based on user input.
+    
+    Args:
+        df - Pandas DataFrame containing bikeshare data
+    """
+    print('\nDisplaying Data...\n')
+    while True:
+        display = input('\nDo you want to view 5 rows of raw data? Please enter yes or no.\n')
+        if display.lower() != 'yes':
+            break
+        print(tabulate(df_default.iloc[np.arange(0+i,5+i)], headers ="keys"))
+        i+=5
 
 def main():
     while True:
