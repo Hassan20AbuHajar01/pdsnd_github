@@ -54,7 +54,7 @@ def load_data(city, month, day):
         Returns:
             df (DataFrame): Pandas DataFrame containing the city's bikeshare data.
     """
-    df = pd.read_csv(CITY_DATA[city])
+    df = pd.read_csv(f'{city}.csv')
     df['Start Time'] = pd.to_datetime(df['Start Time'])
     # Extract month and day of week from 'Start Time'
     df['Month'] = df['Start Time'].dt.month
@@ -142,18 +142,26 @@ def user_stats(df):
     print('\nCalculating User Stats...\n')
     start_time = time.time()
 
-    # Display counts of user types
-    user_types_counts = df['User Type'].value_counts()
-    print("Counts of user types:")
-    print(user_types_counts)
+    # Display unique user types
+    unique_user_types = df['User Type'].unique()
+    print("Unique user types:", ', '.join(unique_user_types))
 
-    # Display counts of gender (if available in the data)
+    # Display unique gender values (if available in the data)
     if 'Gender' in df:
-        gender_counts = df['Gender'].value_counts()
-        print("\nCounts of gender:")
-        print(gender_counts)
+        unique_genders = df['Gender'].unique()
+        print("\nUnique genders:", ', '.join(unique_genders))
     else:
         print("\nGender data is not available for this city.")
+
+    # Display unique birth years (if available in the data)
+    if 'Birth Year' in df:
+        unique_birth_years = df['Birth Year'].unique()
+        print("\nUnique birth years:", ', '.join(map(str, unique_birth_years)))
+    else:
+        print("\nBirth year data is not available for this city.")
+
+    print("\nThis took %s seconds." % (time.time() - start_time))
+    print('-'*40)
 
     # Display earliest, most recent, and most common year of birth (if available in the data)
     if 'Birth Year' in df:
